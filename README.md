@@ -1,4 +1,11 @@
 {
+    success:Boolean,
     message:"",
-    error:true
+    status:404
+    error:{
+        message:"",
+    }
+    data:{
+        
+    }
 }
