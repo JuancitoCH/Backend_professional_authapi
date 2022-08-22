@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
-import { request, response } from "express";
-import { errorResponse } from "../helpers/responses.helper.js";
-import { jwtSecret } from "../config/config.js";
+const jwt = require("jsonwebtoken");
+const { request, response } = require("express");
+const { errorResponse } = require("../helpers/responses.helper.js");
+const { jwtSecret } = require("../config/config.js");
 
 const validateRol = (...roles) => {
   return (req = request, res = response, next) => {
@@ -19,11 +19,11 @@ const verifyToken = (req = request, res = response, next) => {
 
   try {
     const payload = jwt.verify(token, jwtSecret);
-    req.user = payload;
+    req.userData = payload;
   } catch (error) {
     return errorResponse(res, error);
   }
   next()
 };
 
-export { validateRol, verifyToken };
+module.exports = { validateRol, verifyToken };
