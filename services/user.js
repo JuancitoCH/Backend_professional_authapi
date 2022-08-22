@@ -13,30 +13,32 @@ class userService {
         return await UserModel.findOne({ email })
     }
 
-    async create( data ){
+    async create(data) {
         try {
             const user = await UserModel.create(data)
             return user
 
         } catch (error) {
-           console.log(error);
-           
-           if(error.code===11000){
-               const message = `El correo ${error.keyValue.email} ya tiene una cuenta registrada`
+            console.log(error);
 
-               return {
-                   error:true,
-                   message
-               }
-           }else{
+            if (error.code === 11000) {
+                const message = `El correo ${error.keyValue.email} ya tiene una cuenta registrada`
+
                 return {
-                     error:true,
-                     message:error.message
+                    success:false,
+                    error: true,
+                    message
                 }
-           }
+            } else {
+                return {
+                    success:false,
+                    error: true,
+                    message: error.message
+                }
+            }
         }
     }
 
-    
+
 }
 module.exports = userService

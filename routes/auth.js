@@ -2,7 +2,7 @@ const express = require('express')
 const Auth = require('../services/auth')
 
 
-const auth = (app) => {
+const auth_router = (app) => {
     const router = express.Router()
     const authService = new Auth()
 
@@ -10,18 +10,20 @@ const auth = (app) => {
 
     router.post('/login', async (req, res) => {
         const response = await authService.login(req.body)
-        return cookieResponse(res, response)
-    })
-    router.get('/logout', async (req, res) => {
-        return cookieResponse(res,{})
+        return res.json(response)
+        // return cookieResponse(res, response)
     })
     router.post('/register', async (req, res) => {
         const response = await authService.register(req.body)
-        return cookieResponse(res, response)
+        return res.json(response)
+        // return cookieResponse(res, response)
     })
-    router.get('/',isUser,(req,res)=>{
-        return res.json({ ...req.userData })
-    })
+    // router.get('/logout', async (req, res) => {
+    //     return cookieResponse(res,{})
+    // })
+    // router.get('/',isUser,(req,res)=>{
+    //     return res.json({ ...req.userData })
+    // })
 }
 
-module.exports = auth
+module.exports = auth_router

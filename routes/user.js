@@ -3,7 +3,7 @@ const User = require('../services/user')
 
 function user_router(app){
     const router = express.Router()
-    app.use('/user',router)
+    app.use('/api/user',router)
     // Instance of user Service
     const userService = new User()
 

@@ -30,16 +30,16 @@ const userSchema = new Schema({
             }
         }
     },
-    dni:{
-        type:String,
-        trim: true,
-        unique:true
-    },
-    phone:{
-        type:String,
-        trim: true,
-        unique:true
-    },
+    // dni:{
+    //     type:String,
+    //     trim: true,
+    //     unique:true
+    // },
+    // phone:{
+    //     type:String,
+    //     trim: true,
+    //     unique:true
+    // },
     role:{
         type:Number,
         default:1
