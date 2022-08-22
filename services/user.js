@@ -1,4 +1,4 @@
-const UserModel = require('../models/users')
+const UserModel = require('../models/user')
 
 class userService {
 
@@ -6,9 +6,9 @@ class userService {
         return await UserModel.find()
     }
 
-    async getUserId(id) {
-        return await UserModel.findById(id)
-    }
+    // async getUserId(id) {
+    //     return await UserModel.findById(id)
+    // }
     async getUserbyEmail(email) {
         return await UserModel.findOne({ email })
     }
@@ -38,17 +38,5 @@ class userService {
     }
 
     
-    async updateUserbyId(id, data) {
-        return await UserModel.findByIdAndUpdate(id, data, { new: true })
-    }
-
-    async updateUserbyEmail(email, data) {
-        return await UserModel.findOneAndUpdate({ email }, data, { new: true })
-    }
-    
-    async deleteUserById(_id) {
-        
-        return await UserModel.deleteOne({_id})
-    }
 }
 module.exports = userService

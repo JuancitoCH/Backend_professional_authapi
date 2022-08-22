@@ -2,8 +2,6 @@ const express = require('express')
 const Auth = require('../services/auth')
 
 
-
-
 const auth = (app) => {
     const router = express.Router()
     const authService = new Auth()

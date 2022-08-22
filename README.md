@@ -1,11 +1,14 @@
-{
-    success:Boolean,
-    message:"",
-    status:404
-    error:{
-        message:"",
+### Response Format
+```js
+    {
+        success:Boolean,
+        message:"Message",
+        status:404
+        error:{
+            message:"Error Message",
+        }
+        data:{
+            
+        }
     }
-    data:{
-        
-    }
-}
+```
