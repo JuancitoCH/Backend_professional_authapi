@@ -1,6 +1,6 @@
 //import { response } from "express";
 const response = require("express").response;
-const { jwtSecret } = require("../config/envs.js");
+const { jwt_secret } = require("../config/envs.js");
 const jwt = require("jsonwebtoken");
 
 const errorResponse = (res = response, error, status = 500) => {
@@ -36,10 +36,10 @@ const authResponse = async (
   data,
   isprovider = false
 ) => {
-  const { payload, token } = data;
+  const { data:payload, token } = data;
   let exp;
   try {
-    exp = jwt.verify(token, jwtSecret).exp;
+    exp = jwt.verify(token, jwt_secret).exp;
   } catch (error) {
     return errorResponse(res, error, 500);
   }
@@ -47,8 +47,8 @@ const authResponse = async (
         .status(status)
         .cookie("token", token, {
           httpOnly: true,
-          secure: true,
-          sameSite: "none",
+          // secure: true,
+          // sameSite: "none",
           expires: new Date(exp * 1000),
         })
         .json({ ok, message, ...payload });

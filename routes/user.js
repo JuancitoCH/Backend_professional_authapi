@@ -1,4 +1,5 @@
 const express = require('express')
+const { validateRol,verifyToken } = require('../middlewares/auth.middleware')
 const User = require('../services/user')
 
 function user_router(app){
@@ -7,12 +8,12 @@ function user_router(app){
     // Instance of user Service
     const userService = new User()
 
-    router.get('/',async (req,res)=>{
+    router.get('/',verifyToken,validateRol(1,2),async (req,res)=>{
         const response = await userService.getAllUsers()
         return res.json(response)
     })
 
-    router.post('/create',async(req,res)=>{
+    router.post('/create',verifyToken,validateRol(1,2),async(req,res)=>{
         const data = req.body
         const response = await userService.create(data)
         return res.json(response)
