@@ -6,8 +6,9 @@ const {port} = require('./config/envs')
 const auth_router = require("./routes/auth")
 const user_router = require("./routes/user")
 const app = express()
-
+const cookies = require('cookie-parser')
 // middelwares
+app.use(cookies())
 app.use(express.json())
 
 connection() //db

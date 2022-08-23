@@ -55,7 +55,6 @@ class Auth{
         return {
             message:"User Login Succefully",
             success:true,
-            error:false,
             data:{
                 user
             },
