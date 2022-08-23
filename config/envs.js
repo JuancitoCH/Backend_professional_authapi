@@ -7,6 +7,7 @@ const config={
     db_host: process.env.DB_HOST,
     db_name: process.env.DB_NAME,
     jwt_secret: process.env.JWT_SECRET,
+    mode:process.env.NODE_ENV
 }
 
 module.exports=config

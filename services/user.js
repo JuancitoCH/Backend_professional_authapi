@@ -3,38 +3,39 @@ const UserModel = require('../models/user')
 class userService {
 
     async getAllUsers() {
-        return await UserModel.find()
+        try {
+            const users = await UserModel.find()
+            return { success:true, users }
+        } catch (error) {
+            return { success: false, error }
+        }
     }
 
     // async getUserId(id) {
     //     return await UserModel.findById(id)
     // }
-    async getUserbyEmail(email) {
-        return await UserModel.findOne({ email })
+    async getUserbyEmail(email) { 
+        try {
+           const user = await UserModel.findOne({ email }) 
+           if (!user) throw new Error("User not found");
+           return { success:true, user }
+        } catch (error) {
+            return { success:false, error }
+        }
     }
 
     async create(data) {
         try {
             const user = await UserModel.create(data)
-            return user
+            return {
+                success:true,
+                user
+            }
 
         } catch (error) {
-            console.log(error);
-
-            if (error.code === 11000) {
-                const message = `El correo ${error.keyValue.email} ya tiene una cuenta registrada`
-
-                return {
-                    success:false,
-                    error: true,
-                    message
-                }
-            } else {
-                return {
-                    success:false,
-                    error: true,
-                    message: error.message
-                }
+            return {
+                success:false,
+                error
             }
         }
     }

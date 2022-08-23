@@ -1,13 +1,13 @@
 //import { response } from "express";
 const response = require("express").response;
-const { jwtSecret } = require("../config/envs.js");
+const { jwt_secret, mode } = require("../config/envs.js");
 const jwt = require("jsonwebtoken");
 
 const errorResponse = (res = response, error, status = 500) => {
   if (error.hasOwnProperty("code") || error.hasOwnProperty("errors")) {
     if (error.code === 11000) {
       return res.status(400).json({
-        ok: false,
+        success: false,
         errors: Object.keys(error.keyValue).map((field) => ({
           message: `The ${field} ${error.keyValue[field]} is already in use`,
         })),
@@ -15,7 +15,7 @@ const errorResponse = (res = response, error, status = 500) => {
     }
 
     return res.status(400).json({
-      ok: false,
+      success: false,
       errors: Object.values(error.errors).map(({ message }) => ({
         message,
       })),
@@ -23,7 +23,7 @@ const errorResponse = (res = response, error, status = 500) => {
   }
 
   return res.status(status).json({
-    ok: false,
+    success: false,
     errors: [{ message: error.message || error }],
   });
 };
@@ -31,15 +31,14 @@ const errorResponse = (res = response, error, status = 500) => {
 const authResponse = async (
   res = response,
   status,
-  ok,
+  success,
   message,
   data,
-  isprovider = false
 ) => {
-  const { payload, token } = data;
+  const { user, token } = data;
   let exp;
   try {
-    exp = jwt.verify(token, jwtSecret).exp;
+    exp = jwt.verify(token, jwt_secret).exp;
   } catch (error) {
     return errorResponse(res, error, 500);
   }
@@ -47,35 +46,35 @@ const authResponse = async (
         .status(status)
         .cookie("token", token, {
           httpOnly: true,
-          secure: true,
-          sameSite: "none",
+          // comprobamos el modo de el server ( dev )
+        ...(mode!=='dev')&&( {secure:true, sameSite:'none'} ),
           expires: new Date(exp * 1000),
         })
-        .json({ ok, message, ...payload });
+        .json({ success, message, user });
 };
 
 const successfulResponse = (
   res = response,
   status,
-  ok,
+  success,
   message,
   data = null
 ) => {
   return data
     ? res.status(status).json({
-        ok,
+        success,
         message,
         data,
       })
     : res.status(status).json({
-        ok,
+        success,
         message,
       });
 };
 
 const logoutResponse = (res = response) => {
   return res.clearCookie("token").status(200).json({
-    ok: true,
+    success: true,
     message: "Session was successfully closed",
   });
 };

@@ -13,15 +13,22 @@ const auth_router = (app) => {
     router.post('/login', async (req, res) => {
         const response = await authService.login(req.body)
         response.success 
-        ? authResponse(res, 200, true, 'Login successful', response) 
+        ? authResponse(res, 200, true, 'Login successful', response.data) 
         : errorResponse(res, response)
-        return res.json(response)
         // return cookieResponse(res, response)
     })
     router.post('/register', async (req, res) => {
         const response = await authService.register(req.body)
-        return res.json(response)
-        // return cookieResponse(res, response)
+
+        response.success
+        ? successfulResponse(
+            res,
+            201,
+            true,
+            response.message,
+            response.data.user
+        )
+        : errorResponse(res, response.error);
     })
 
     router.get('/logout', async (req, res) => {

@@ -5,10 +5,12 @@ const { connection } = require("./config/db")
 const {port} = require('./config/envs')
 const auth_router = require("./routes/auth")
 const user_router = require("./routes/user")
+const cookieParser = require('cookie-parser')
 const app = express()
 
 // middelwares
 app.use(express.json())
+app.use(cookieParser())
 
 connection() //db
 
