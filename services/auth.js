@@ -23,22 +23,49 @@ class Auth{
         // }
         // Encriptamos password
         if(password) data.password = await this.cryptPassword(password)
-        const userRegistered = await this.userService.create(data)
-        if(userRegistered.success === false) return userRegistered
         
-        const token  = this.getToken(userRegistered)
-        // eliminamos password de la respuesta del return
-        userRegistered.user.password=null
-        delete userRegistered.user.password
+        try {
+            const userRegistered = await this.userService.create(data)
+            if(userRegistered.success === false) throw new Error(userRegistered.error);
 
-        return {
-            message:"User Register Succefully",
-            success:true,
-            data:{
-                user:userRegistered,
-                token
+            const token  = this.getToken(userRegistered)
+            // eliminamos password de la respuesta del return
+            userRegistered.user.password=null
+            delete userRegistered.user.password
+
+            return {
+                message:"User Register Succefully",
+                success:true,
+                data:{
+                    user:userRegistered,
+                    token
+                }
+            }
+        } catch (error) {
+            return {
+                success:false,
+                error:error
             }
         }
+
+
+
+
+        //if(userRegistered.success === false) return userRegistered
+        
+        // const token  = this.getToken(userRegistered)
+        // // eliminamos password de la respuesta del return
+        // userRegistered.user.password=null
+        // delete userRegistered.user.password
+
+        // return {
+        //     message:"User Register Succefully",
+        //     success:true,
+        //     data:{
+        //         user:userRegistered,
+        //         token
+        //     }
+        // }
     }
 
     async login({email,password}){

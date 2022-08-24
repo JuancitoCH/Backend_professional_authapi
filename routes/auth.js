@@ -5,6 +5,7 @@ const {logoutResponse, successfulResponse, authResponse, errorResponse} = requir
 
 
 const auth_router = (app) => {
+    
     const router = express.Router()
     const authService = new Auth()
 
@@ -12,21 +13,17 @@ const auth_router = (app) => {
 
     router.post('/login', async (req, res) => {
         const response = await authService.login(req.body)
+
         response.success 
         ? authResponse(res, 200, true, 'Login successful', response.data) 
         : errorResponse(res, response)
-        // return cookieResponse(res, response)
     })
+
     router.post('/register', async (req, res) => {
         const response = await authService.register(req.body)
 
         response.success
-        ? successfulResponse(
-            res,
-            201,
-            true,
-            response.message,
-            response.data.user
+        ? successfulResponse(res,201,true,response.message,response.data.user
         )
         : errorResponse(res, response.error);
     })
@@ -36,14 +33,8 @@ const auth_router = (app) => {
     })
 
     router.get('/sesion',verifyToken,(req,res)=>{
-        //return res.json({ ...req.userData })
-        return res.status(200).json({
-            success: true,
-            message: 'Token correcto',
-            data: {
-                ...req.userData
-            }
-        })
+        const {password,iat,exp,...userInfo} = req.userData
+        successfulResponse(res,201,true,'Token correcto',userInfo)
     } )
 }
 

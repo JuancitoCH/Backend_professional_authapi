@@ -8,23 +8,23 @@ const errorResponse = (res = response, error, status = 500) => {
     if (error.code === 11000) {
       return res.status(400).json({
         success: false,
-        errors: Object.keys(error.keyValue).map((field) => ({
-          message: `The ${field} ${error.keyValue[field]} is already in use`,
-        })),
-      });
+        errors: { message: Object.keys(error.keyValue).map((field) => {
+          return `The ${field} ${error.keyValue[field]} is already in use`
+        })}
+      })
     }
 
     return res.status(400).json({
       success: false,
-      errors: Object.values(error.errors).map(({ message }) => ({
-        message,
-      })),
+      errors: { message: Object.values(error.errors).map(({ message }) => {
+        return message
+      })},
     });
   }
 
   return res.status(status).json({
     success: false,
-    errors: [{ message: error.message || error }],
+    errors: { message: error.message || error },
   });
 };
 
