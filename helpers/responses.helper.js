@@ -32,7 +32,7 @@ const errorResponse = (res = response, error, status = 500) => {
 
   return res.status(status).json({
     success: false,
-    errors: { message: error.message || error },
+    errors: { message: [error.message] || error },
   });
 };
 

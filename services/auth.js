@@ -32,9 +32,9 @@ class Auth{
     }
 
     async login({email,password}){
-        if(!email || !password) return {success:false,message:["You must include Credentials"]}
+        if(!email || !password) return {success:false,message:"You must include Credentials"}
         const response = await this.userService.getUserbyEmail(email)
-        if(response.success==false) return {success:false,message:['Email has not been registered']}
+        if(response.success==false) return {success:false,message:'Email has not been registered'}
 
         const passwordCompare = await bcrypt.compare(password,response.user.password)
         if(!passwordCompare) return {success:false,message:"Incorrect Credentials"}
