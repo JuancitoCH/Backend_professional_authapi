@@ -6,7 +6,7 @@ const userSchema = new Schema({
     name:{
         type:String,
         trim: true,
-        required: true,
+        required: [true,'The name is required'],
         lowercase: true
     },
     lastName:{
@@ -15,14 +15,14 @@ const userSchema = new Schema({
     },
     password:{
         type:String,
-        required:true,
+        required:[true,'The password is required'],
         trim: true,
         minlength: 5
     },
     email:{
         type:String,
-        unique:true,
-        required:[true, "Email is a required field"],
+        unique:[true,'The email has been already registered'],
+        required:[true,'The email is required'],
         trim: true,
         validate:{
             validator: function(value){

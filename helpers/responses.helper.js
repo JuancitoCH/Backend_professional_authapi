@@ -14,11 +14,19 @@ const errorResponse = (res = response, error, status = 500) => {
       })
     }
 
+    let errors = {};
+
     return res.status(400).json({
       success: false,
-      errors: { message: Object.values(error.errors).map(({ message }) => {
-        return message
-      })},
+      errors: { 
+        message: 
+        Object.values(error.errors).map(({ message }) => {
+          return message
+        })
+        // Object.keys(error.errors).forEach((key) => {
+        //   errors[key] = error.errors[key].message;
+        // })
+    },
     });
   }
 
